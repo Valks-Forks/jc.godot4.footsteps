@@ -100,6 +100,7 @@ namespace JC.Footsteps
 		float _PanRange;
 		float _MinUnitSize,   _MaxUnitSize;
 		float _MinPitchRange, _MaxPitchRange;
+		bool _EnablePanner = false;
 
 		public override void _EnterTree()
 		{
@@ -111,7 +112,8 @@ namespace JC.Footsteps
 			if(Engine.IsEditorHint())
 				return;
 			
-			Play(false);
+			_EnablePanner = false;
+			Play();
 		}
 
 		public override void _PhysicsProcess(double delta)
@@ -138,7 +140,8 @@ namespace JC.Footsteps
 				_DistanceTravelled += _Character.Velocity.Length() * (float)delta;
 				if(_DistanceTravelled > _Step)
 				{
-					Play(true);
+					_EnablePanner = true;
+					Play();
 					_DistanceTravelled = 0.0f;
 					_Step = StepInterval;
 				}
@@ -172,7 +175,7 @@ namespace JC.Footsteps
 			return null;
 		}
 
-		private void Play(bool panner)
+		private void Play()
 		{
 			if(AudioPlayer == null)
 				return;
@@ -180,12 +183,12 @@ namespace JC.Footsteps
 			_CurrentSurfaceTexture = GetGroundTexture();
 			if(_CurrentSurfaceTexture != null)
 			{
-				PlaySurfaceClips(panner);
+				PlaySurfaceClips();
 			}
 			else
 			{
 				_DefaultSurface = true;
-				PlayDefaultClips(panner);
+				PlayDefaultClips();
 			}
 		}
 
@@ -194,11 +197,12 @@ namespace JC.Footsteps
 			if(AudioPlayer == null)
 				return;
 			
-			Play(false);
-			PlayAudioPlayer(_CurrentLandingClip, false);
+			_EnablePanner = false;
+			Play();
+			PlayAudioPlayer(_CurrentLandingClip);
 		}
 
-		private void PlayAudioPlayer(AudioStream clip, bool panner)
+		private void PlayAudioPlayer(AudioStream clip)
 		{
 			float unit = _Random.RandfRange(_MinUnitSize, _MaxUnitSize);
 			AudioPlayer.UnitSize = unit;
@@ -210,7 +214,7 @@ namespace JC.Footsteps
 				AudioEffectPanner fx = (AudioEffectPanner)AudioServer.GetBusEffect((int)BusIndex, (int)PanIndex);
 				if(fx != null)
 				{
-					if(panner)
+					if(_EnablePanner)
 					{
 						fx.Pan = _PanRange - fx.Pan - _PanRange;
 						if(fx.Pan == 0.0f)
@@ -235,7 +239,7 @@ namespace JC.Footsteps
 			AudioPlayer.Play();
 		}
 
-		private void PlaySurfaceClips(bool panner)
+		private void PlaySurfaceClips()
 		{
 			if(surfaces.Count > 0)
 			{
@@ -250,22 +254,26 @@ namespace JC.Footsteps
 						_MinPitchRange = surface.MinPitchRange;
 						_MaxPitchRange = surface.MaxPitchRange;
 
-						_CurrentLandingClip = surface.landingClip;
+						if(surface.landingClips.Count > 0)
+							_CurrentLandingClip = surface.landingClips[
+								_Random.RandiRange(0, surface.landingClips.Count - 1)
+							];
 
-						int i = _Random.RandiRange(0, surface.clips.Count - 1);
-						PlayAudioPlayer(surface.clips[i], panner);
+						PlayAudioPlayer(
+							surface.clips[_Random.RandiRange(0, surface.clips.Count - 1)
+						]);
 					}
 				}
 			}
 			else
 			{
 				_DefaultSurface = true;
-				PlayDefaultClips(panner);
+				PlayDefaultClips();
 
 			}
 		}
 
-		private void PlayDefaultClips(bool panner)
+		private void PlayDefaultClips()
 		{
 			if(DefaultClips == null)
 				return;
@@ -275,11 +283,15 @@ namespace JC.Footsteps
 			_PanRange = DefaultClips.PanRange;
 			_MinPitchRange = DefaultClips.MinPitchRange;
 			_MaxPitchRange = DefaultClips.MaxPitchRange;
+			
+			if(DefaultClips.landingClips.Count > 0)
+				_CurrentLandingClip = DefaultClips.landingClips[
+					_Random.RandiRange(0, DefaultClips.landingClips.Count - 1)
+				];
 
-			_CurrentLandingClip = DefaultClips.landingClip;
-
-			int i = _Random.RandiRange(0, DefaultClips.clips.Count - 1);
-			PlayAudioPlayer(DefaultClips.clips[i], panner);
+			PlayAudioPlayer(
+				DefaultClips.clips[_Random.RandiRange(0, DefaultClips.clips.Count - 1)]
+			);
 		}
 	}
 }

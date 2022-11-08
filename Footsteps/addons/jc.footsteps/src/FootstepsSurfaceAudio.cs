@@ -9,7 +9,7 @@ namespace JC.Footsteps
 	{
 
 		[ExportGroup("Clip Landing")]
-		[Export] public AudioStream landingClip = null;
+		[Export] public Array<AudioStream> landingClips;
 
 		[ExportGroup("Clips List")]
 		[Export] public Array<AudioStream> clips;

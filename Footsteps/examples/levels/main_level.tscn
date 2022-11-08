@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://coii4xb1qn2oc"]
+[gd_scene load_steps=22 format=3 uid="uid://dgmss7do6d01p"]
 
 [ext_resource type="Texture2D" uid="uid://ds8tfs1v3gxpu" path="res://examples/content/third-party/kenney-assets/PNG/Green/texture_09.png" id="1_4j1d1"]
 [ext_resource type="Texture2D" uid="uid://dlemyiwrexxl8" path="res://examples/content/third-party/kenney-assets/PNG/Light/texture_07.png" id="2_nla2h"]
@@ -69,7 +69,6 @@ transform = Transform3D(0.703581, 0.250918, -0.664842, 0.710615, -0.248434, 0.65
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.551231, 6.12254, 0)
 floor_block_on_wall = false
 script = ExtResource("4_1xdqg")
-JumpForce = 6.0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="FPCharacter"]
 shape = SubResource("CapsuleShape3D_lhja6")
