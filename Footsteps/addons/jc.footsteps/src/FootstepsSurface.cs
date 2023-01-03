@@ -11,7 +11,7 @@ namespace JC.Footsteps
 		[Export]
 		public Array<Texture> surfaceTextures; 
 
-		public bool Exists(Texture texture)
+		/*public bool Exists(Texture texture)
 		{
 			if(texture == null)
 				return false;
@@ -20,6 +20,6 @@ namespace JC.Footsteps
 				return true;
 			
 			return false;
-		}
+		}*/
 	}
 }

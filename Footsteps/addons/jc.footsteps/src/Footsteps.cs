@@ -21,10 +21,7 @@ namespace JC.Footsteps
 			get => _SurfaceMetaID;
 			set
 			{
-				if(value == "")
-					_SurfaceMetaID = kDefaultSurfaceMetaID;
-				else
-					_SurfaceMetaID = value;
+				_SurfaceMetaID = value == "" ? kDefaultSurfaceMetaID : value;
 			}
 		}
 
@@ -69,7 +66,7 @@ namespace JC.Footsteps
 		CharacterBody3D _Character = null;
 
 		bool  _IsOnAir = false;
-		float _Step;
+
 		float _DistanceTravelled;
 
 		// Current clips.
@@ -116,16 +113,15 @@ namespace JC.Footsteps
 				_IsOnAir = false;
 			}
 
-			// Step.
+			// Step process.
 			if(_Character.IsOnFloor())
 			{
 				_DistanceTravelled += _Character.Velocity.Length() * (float)delta;
-				if(_DistanceTravelled > _Step)
+				if(_DistanceTravelled > StepInterval)
 				{
 					_PannerSwitch = true;
 					Play();
 					_DistanceTravelled = 0.0f;
-					_Step = StepInterval;
 				}
 			}
 		}
@@ -228,7 +224,8 @@ namespace JC.Footsteps
 			{
 				foreach(var surface in surfaces)
 				{
-					if(surface.Exists(_CurrentSurfaceTexture))
+					//if(surface.Exists(_CurrentSurfaceTexture))
+					if(surface.surfaceTextures.Contains(_CurrentSurfaceTexture))
 					{
 						_IsDefaultSurface = false;
 						_MinUnitSize = surface.MinUnitSize;
@@ -236,7 +233,6 @@ namespace JC.Footsteps
 						_PanRange = surface.PanRange;
 						_MinPitchRange = surface.MinPitchRange;
 						_MaxPitchRange = surface.MaxPitchRange;
-
 
 						_Random.Randomize();
 						if(surface.landingClips.Count > 0)
