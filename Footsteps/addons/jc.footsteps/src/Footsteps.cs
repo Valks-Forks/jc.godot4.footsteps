@@ -5,15 +5,15 @@ using System;
 namespace JC.Footsteps;
 
 [Tool]
-public partial class Footsteps: Node3D
+public partial class Footsteps : Node3D
 {
-	public AudioStreamPlayer3D AudioPlayer{ get; set; } = null;
+	public AudioStreamPlayer3D AudioPlayer { get; set; } = null;
 
 	/// <summary> Default footsteps audio streams. </summary>
-	public FootstepsSurfaceAudio DefaultClips{ get; set; } = null;
+	public FootstepsSurfaceAudio DefaultClips { get; set; } = null;
 
-	const String kDefaultSurfaceMetaID = "surface";
-	String _SurfaceMetaID = kDefaultSurfaceMetaID;
+	private const String kDefaultSurfaceMetaID = "surface";
+	private String _SurfaceMetaID = kDefaultSurfaceMetaID;
 
 	/// <summary> Surface ID for Metadata. </summary>
 	public String SurfaceMetaID
@@ -32,11 +32,12 @@ public partial class Footsteps: Node3D
 	[ExportGroup("Step")]
 
 	/// <summary> Interval between each step. </summary>
-	[Export] public float StepInterval{ get; set; } = 2.0f;
+	[Export] public float StepInterval { get; set; } = 2.0f;
 
-	public uint BusIndex{ get; set; } = 1;
+	public uint BusIndex { get; set; } = 1;
 
-	bool _EnablePan = false;
+	private bool _EnablePan = false;
+
 	public bool EnablePan
 	{
 		get => _EnablePan;
@@ -47,9 +48,10 @@ public partial class Footsteps: Node3D
 		}
 	}
 
-	public uint PanIndex{ get; set; } = 0;
+	public uint PanIndex { get; set; } = 0;
 
-	bool _EnablePitch = false;
+	private bool _EnablePitch = false;
+
 	public bool EnablePitch
 	{
 		get => _EnablePitch;
@@ -60,27 +62,28 @@ public partial class Footsteps: Node3D
 		}
 	}
 
-	public uint PitchIndex{ get; set; } = 1;
-	
+	public uint PitchIndex { get; set; } = 1;
+
 	// Character body node.
-	CharacterBody3D _Character = null;
+	private CharacterBody3D _Character = null;
 
-	bool  _IsOnAir = false;
+	private bool _IsOnAir = false;
 
-	float _DistanceTravelled;
+	private float _DistanceTravelled;
 
 	// Current clips.
-	AudioStream _CurrentLandingClip = null;
-	Texture _CurrentSurfaceTexture = null;
+	private AudioStream _CurrentLandingClip = null;
 
-	RandomNumberGenerator _Random = new();
-	bool _IsDefaultSurface = true;
-	
-	float _PanRange;
-	float _MinUnitSize,   _MaxUnitSize;
-	float _MinPitchRange, _MaxPitchRange;
-	
-	bool _PannerSwitch = false;
+	private Texture _CurrentSurfaceTexture = null;
+
+	private RandomNumberGenerator _Random = new();
+	private bool _IsDefaultSurface = true;
+
+	private float _PanRange;
+	private float _MinUnitSize, _MaxUnitSize;
+	private float _MinPitchRange, _MaxPitchRange;
+
+	private bool _PannerSwitch = false;
 
 	public override void _EnterTree()
 	{
@@ -89,35 +92,35 @@ public partial class Footsteps: Node3D
 
 	public override void _Ready()
 	{
-		if(Engine.IsEditorHint())
+		if (Engine.IsEditorHint())
 			return;
-		
+
 		_PannerSwitch = false;
 		Play();
 	}
 
 	public override void _PhysicsProcess(double delta)
 	{
-		if(Engine.IsEditorHint())
+		if (Engine.IsEditorHint())
 			return;
-		
-		if(_Character == null)
+
+		if (_Character == null)
 			return;
-		
-		if(!_Character.IsOnFloor())
+
+		if (!_Character.IsOnFloor())
 			_IsOnAir = true;
-		
-		if(_Character.IsOnFloor() && _IsOnAir)
+
+		if (_Character.IsOnFloor() && _IsOnAir)
 		{
 			OnLanding();
 			_IsOnAir = false;
 		}
 
 		// Step process.
-		if(_Character.IsOnFloor())
+		if (_Character.IsOnFloor())
 		{
 			_DistanceTravelled += _Character.Velocity.Length() * (float)delta;
-			if(_DistanceTravelled > StepInterval)
+			if (_DistanceTravelled > StepInterval)
 			{
 				_PannerSwitch = true;
 				Play();
@@ -129,23 +132,23 @@ public partial class Footsteps: Node3D
 	private Texture GetGroundTexture()
 	{
 		KinematicCollision3D slideCollision = null;
-		for(int i = 0; i < _Character.GetSlideCollisionCount(); i++)
+		for (int i = 0; i < _Character.GetSlideCollisionCount(); i++)
 		{
 			slideCollision = _Character.GetSlideCollision(i);
 		}
 
-		if(slideCollision == null)
+		if (slideCollision == null)
 			return null;
 
-		for(int i = 0; i < slideCollision.GetCollisionCount(); i++)
+		for (int i = 0; i < slideCollision.GetCollisionCount(); i++)
 		{
 			var collider = slideCollision.GetCollider(i);
-			if(collider is PhysicsBody3D) 
+			if (collider is PhysicsBody3D)
 			{
-				if(collider.HasMeta(SurfaceMetaID))
+				if (collider.HasMeta(SurfaceMetaID))
 				{
 					Texture meta = (Texture)collider.GetMeta(SurfaceMetaID);
-					if(meta != null)
+					if (meta != null)
 						return meta;
 				}
 			}
@@ -155,11 +158,11 @@ public partial class Footsteps: Node3D
 
 	private void Play()
 	{
-		if(AudioPlayer == null)
+		if (AudioPlayer == null)
 			return;
-		
+
 		_CurrentSurfaceTexture = GetGroundTexture();
-		if(_CurrentSurfaceTexture != null)
+		if (_CurrentSurfaceTexture != null)
 		{
 			PlaySurfaceClips();
 		}
@@ -172,9 +175,9 @@ public partial class Footsteps: Node3D
 
 	private void OnLanding()
 	{
-		if(AudioPlayer == null)
+		if (AudioPlayer == null)
 			return;
-		
+
 		_PannerSwitch = false;
 		Play();
 		PlayAudioPlayer(_CurrentLandingClip);
@@ -188,15 +191,15 @@ public partial class Footsteps: Node3D
 		AudioPlayer.Stream = clip;
 
 		// Panner.
-		if(EnablePan)
+		if (EnablePan)
 		{
 			AudioEffectPanner fx = (AudioEffectPanner)AudioServer.GetBusEffect((int)BusIndex, (int)PanIndex);
-			if(fx != null)
+			if (fx != null)
 			{
-				if(_PannerSwitch)
+				if (_PannerSwitch)
 				{
 					fx.Pan = _PanRange - fx.Pan - _PanRange;
-					if(fx.Pan == 0.0f)
+					if (fx.Pan == 0.0f)
 					{
 						fx.Pan = _PanRange;
 					}
@@ -207,10 +210,10 @@ public partial class Footsteps: Node3D
 		}
 
 		// Pitch.
-		if(EnablePitch)
+		if (EnablePitch)
 		{
 			AudioEffectPitchShift fx = (AudioEffectPitchShift)AudioServer.GetBusEffect((int)BusIndex, (int)PitchIndex);
-			if(fx != null)
+			if (fx != null)
 			{
 				fx.PitchScale = _Random.RandfRange(_MinPitchRange, _MaxPitchRange);
 			}
@@ -220,12 +223,12 @@ public partial class Footsteps: Node3D
 
 	private void PlaySurfaceClips()
 	{
-		if(surfaces.Count > 0)
+		if (surfaces.Count > 0)
 		{
-			foreach(var surface in surfaces)
+			foreach (var surface in surfaces)
 			{
 				//if(surface.Exists(_CurrentSurfaceTexture))
-				if(surface.surfaceTextures.Contains(_CurrentSurfaceTexture))
+				if (surface.surfaceTextures.Contains(_CurrentSurfaceTexture))
 				{
 					_IsDefaultSurface = false;
 					_MinUnitSize = surface.MinUnitSize;
@@ -235,7 +238,7 @@ public partial class Footsteps: Node3D
 					_MaxPitchRange = surface.MaxPitchRange;
 
 					_Random.Randomize();
-					if(surface.landingClips.Count > 0)
+					if (surface.landingClips.Count > 0)
 						_CurrentLandingClip = surface.landingClips[
 							_Random.RandiRange(0, surface.landingClips.Count - 1)
 						];
@@ -250,23 +253,22 @@ public partial class Footsteps: Node3D
 		{
 			_IsDefaultSurface = true;
 			PlayDefaultClips();
-
 		}
 	}
 
 	private void PlayDefaultClips()
 	{
-		if(DefaultClips == null)
+		if (DefaultClips == null)
 			return;
-		
+
 		_MinUnitSize = DefaultClips.MinUnitSize;
 		_MaxUnitSize = DefaultClips.MaxUnitSize;
 		_PanRange = DefaultClips.PanRange;
 		_MinPitchRange = DefaultClips.MinPitchRange;
 		_MaxPitchRange = DefaultClips.MaxPitchRange;
-		
+
 		_Random.Randomize();
-		if(DefaultClips.landingClips.Count > 0)
+		if (DefaultClips.landingClips.Count > 0)
 			_CurrentLandingClip = DefaultClips.landingClips[
 				_Random.RandiRange(0, DefaultClips.landingClips.Count - 1)
 			];

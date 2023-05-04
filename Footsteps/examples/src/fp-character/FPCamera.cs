@@ -1,24 +1,26 @@
 using Godot;
 using System;
 
-public partial class FPCamera: Node3D
+public partial class FPCamera : Node3D
 {
 	[Export]
-	public float MouseSensitive{ get; set; } = 0.005f;
+	public float MouseSensitive { get; set; } = 0.005f;
 
 	[Export]
 	private Vector2 _XClamp = new(-65.0f, 80.0f);
+
 	public Vector2 XClamp
 	{
-		get => _XClamp; 
-		set => _XClamp = value; 
+		get => _XClamp;
+		set => _XClamp = value;
 	}
 
 	[Export]
-	public Node3D Target{ get; set; } = null;
+	public Node3D Target { get; set; } = null;
 
 	[Export]
-	private Camera3D _Camera{get; set; } = null;
+	private Camera3D _Camera { get; set; } = null;
+
 	private FPCharacter _Player = null;
 
 	private Transform3D _PrevTr = new();
@@ -27,7 +29,7 @@ public partial class FPCamera: Node3D
 
 	public override void _Notification(long what)
 	{
-		if(what == NotificationParented)
+		if (what == NotificationParented)
 		{
 			_Player = GetParent() as FPCharacter;
 		}
@@ -38,7 +40,7 @@ public partial class FPCamera: Node3D
 		TopLevel = true;
 		Target = Target; // Did you mean to do this.Target = Target?
 
-		if(_Camera == null)
+		if (_Camera == null)
 		{
 			GD.PushWarning("Camera Not Found");
 		}
@@ -55,7 +57,7 @@ public partial class FPCamera: Node3D
 	public override void _UnhandledInput(InputEvent @event)
 	{
 		base._UnhandledInput(@event);
-		if(@event is InputEventMouseMotion)
+		if (@event is InputEventMouseMotion)
 		{
 			InputEventMouseMotion mouseMotion = @event as InputEventMouseMotion;
 
@@ -65,21 +67,21 @@ public partial class FPCamera: Node3D
 
 			rot.y -= mouseMotion.Relative.x * MouseSensitive;
 			rot.y = Mathf.Wrap(rot.y, 0.0f, Mathf.DegToRad(360.0f));
-			
+
 			Rotation = rot;
 		}
 	}
 
 	public override void _Process(double delta)
 	{
-		if(_Player == null)
+		if (_Player == null)
 			return;
-		
+
 		_Player.YawRotation = this.Rotation.y;
-		if(Target == null)
+		if (Target == null)
 			return;
-		
-		if(_IsFixedUpdate)
+
+		if (_IsFixedUpdate)
 		{
 			_PrevTr = _CurrentTr;
 			_CurrentTr = Target.GlobalTransform;

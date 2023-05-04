@@ -1,22 +1,22 @@
 using Godot;
 using Godot.Collections;
-using System;
 
 namespace JC.Footsteps;
 
 [Tool]
 public partial class FootstepsSurfaceAudio : Resource
 {
-
 	[ExportGroup("Clip Landing")]
 	[Export] public Array<AudioStream> landingClips;
 
 	[ExportGroup("Clips List")]
 	[Export] public Array<AudioStream> clips;
-	
+
 	[ExportGroup("Units")]
-	float _MinUnitSize = 0.30f;
-	[Export] public float MinUnitSize
+	private float _MinUnitSize = 0.30f;
+
+	[Export]
+	public float MinUnitSize
 	{
 		get => _MinUnitSize;
 		set
@@ -25,8 +25,10 @@ public partial class FootstepsSurfaceAudio : Resource
 		}
 	}
 
-	float _MaxUnitSize = 0.60f;
-	[Export] public float MaxUnitSize
+	private float _MaxUnitSize = 0.60f;
+
+	[Export]
+	public float MaxUnitSize
 	{
 		get => _MaxUnitSize;
 		set
@@ -37,8 +39,10 @@ public partial class FootstepsSurfaceAudio : Resource
 
 	[ExportGroup("FX")]
 	[ExportSubgroup("Panner")]
-	float _PanRange = 0.1f;
-	[Export] public float PanRange
+	private float _PanRange = 0.1f;
+
+	[Export]
+	public float PanRange
 	{
 		get => _PanRange;
 		set
@@ -48,7 +52,8 @@ public partial class FootstepsSurfaceAudio : Resource
 	}
 
 	[ExportSubgroup("Pitch")]
-	float _MinPitchRange = 0.9f;
+	private float _MinPitchRange = 0.9f;
+
 	[Export]
 	public float MinPitchRange
 	{
@@ -60,6 +65,5 @@ public partial class FootstepsSurfaceAudio : Resource
 	}
 
 	[Export]
-	public float MaxPitchRange{ get; set; } = 1.1f;
+	public float MaxPitchRange { get; set; } = 1.1f;
 }
-	

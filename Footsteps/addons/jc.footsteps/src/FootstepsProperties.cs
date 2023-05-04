@@ -1,23 +1,22 @@
-using System;
 using Godot;
 using Godot.Collections;
 using PropElement = Godot.Collections.Dictionary;
-//using GodotArray = Godot.Collections.Array<Godot.Collections.Dictionary<Godot.Variant, Godot.Variant>>; 
+
+//using GodotArray = Godot.Collections.Array<Godot.Collections.Dictionary<Godot.Variant, Godot.Variant>>;
 
 namespace JC.Footsteps;
 
-public partial class Footsteps: Node3D
+public partial class Footsteps : Node3D
 {
 	public override Array<Godot.Collections.Dictionary> _GetPropertyList()
 	{
 		Array<PropElement> ret = new();
-		
+
 		PropElement pTitle = new()
 		{
 			{"name", "Footsteps"},
 			{"type", (int)Variant.Type.Nil},
 			{"usage", (int)PropertyUsageFlags.Category},
-
 		};
 		ret.Add(pTitle);
 
@@ -44,14 +43,13 @@ public partial class Footsteps: Node3D
 			{"hint", (int)PropertyHint.NodeType}
 		};
 
-		ret.Add(pAudioPlayer); 
+		ret.Add(pAudioPlayer);
 
 		PropElement pSurface = new()
 		{
 			{"name", "Surface"},
 			{"type", (int)Variant.Type.Nil},
 			{"usage", (int)PropertyUsageFlags.Subgroup}
-
 		};
 		ret.Add(pSurface);
 
@@ -93,7 +91,7 @@ public partial class Footsteps: Node3D
 		};
 		ret.Add(pEnablePan);
 
-		if(EnablePan)
+		if (EnablePan)
 		{
 			PropElement pPanIndex = new()
 			{
@@ -110,7 +108,7 @@ public partial class Footsteps: Node3D
 		};
 		ret.Add(pEnablePitch);
 
-		if(EnablePitch)
+		if (EnablePitch)
 		{
 			PropElement pPitchIndex = new()
 			{
