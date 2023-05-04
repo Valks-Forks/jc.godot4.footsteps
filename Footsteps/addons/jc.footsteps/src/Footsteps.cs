@@ -73,7 +73,7 @@ public partial class Footsteps: Node3D
 	AudioStream _CurrentLandingClip = null;
 	Texture _CurrentSurfaceTexture = null;
 
-	RandomNumberGenerator _Random = new RandomNumberGenerator();
+	RandomNumberGenerator _Random = new();
 	bool _IsDefaultSurface = true;
 	
 	float _PanRange;

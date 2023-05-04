@@ -10,9 +10,9 @@ public partial class Footsteps: Node3D
 {
 	public override Array<Godot.Collections.Dictionary> _GetPropertyList()
 	{
-		Array<PropElement> ret = new Array<PropElement>();
+		Array<PropElement> ret = new();
 		
-		PropElement pTitle = new PropElement
+		PropElement pTitle = new()
 		{
 			{"name", "Footsteps"},
 			{"type", (int)Variant.Type.Nil},
@@ -21,7 +21,7 @@ public partial class Footsteps: Node3D
 		};
 		ret.Add(pTitle);
 
-		PropElement pAudio = new PropElement
+		PropElement pAudio = new()
 		{
 			{"name", "Audio"},
 			{"type", (int)Variant.Type.Nil},
@@ -29,7 +29,7 @@ public partial class Footsteps: Node3D
 		};
 		ret.Add(pAudio);
 
-		PropElement pPlayer = new PropElement
+		PropElement pPlayer = new()
 		{
 			{"name", "Player"},
 			{"type", (int)Variant.Type.Nil},
@@ -37,7 +37,7 @@ public partial class Footsteps: Node3D
 		};
 		ret.Add(pPlayer);
 
-		PropElement pAudioPlayer = new PropElement
+		PropElement pAudioPlayer = new()
 		{
 			{"name", "AudioPlayer"},
 			{"type",(int)Variant.Type.Object},
@@ -46,7 +46,7 @@ public partial class Footsteps: Node3D
 
 		ret.Add(pAudioPlayer); 
 
-		PropElement pSurface = new PropElement
+		PropElement pSurface = new()
 		{
 			{"name", "Surface"},
 			{"type", (int)Variant.Type.Nil},
@@ -55,14 +55,14 @@ public partial class Footsteps: Node3D
 		};
 		ret.Add(pSurface);
 
-		PropElement pSurfaceMetaID = new PropElement
+		PropElement pSurfaceMetaID = new()
 		{
 			{"name", "SurfaceMetaID"},
 			{"type", (int)Variant.Type.StringName}
 		};
 		ret.Add(pSurfaceMetaID);
 
-		PropElement pDefaultClips = new PropElement
+		PropElement pDefaultClips = new()
 		{
 			{"name", "DefaultClips"},
 			{"type", (int)Variant.Type.Object},
@@ -71,7 +71,7 @@ public partial class Footsteps: Node3D
 		};
 		ret.Add(pDefaultClips);
 
-		PropElement pFX = new PropElement
+		PropElement pFX = new()
 		{
 			{"name", "FX"},
 			{"type", (int)Variant.Type.Nil},
@@ -79,14 +79,14 @@ public partial class Footsteps: Node3D
 		};
 		ret.Add(pFX);
 
-		PropElement pBusIndex = new PropElement
+		PropElement pBusIndex = new()
 		{
 			{"name", "BusIndex"},
 			{"type", (int)Variant.Type.Int}
 		};
 		ret.Add(pBusIndex);
 
-		PropElement pEnablePan = new PropElement
+		PropElement pEnablePan = new()
 		{
 			{"name", "EnablePan"},
 			{"type", (int)Variant.Type.Bool}
@@ -95,7 +95,7 @@ public partial class Footsteps: Node3D
 
 		if(EnablePan)
 		{
-			PropElement pPanIndex = new PropElement
+			PropElement pPanIndex = new()
 			{
 				{"name", "PanIndex"},
 				{"type", (int)Variant.Type.Int}
@@ -103,7 +103,7 @@ public partial class Footsteps: Node3D
 			ret.Add(pPanIndex);
 		}
 
-		PropElement pEnablePitch = new PropElement
+		PropElement pEnablePitch = new()
 		{
 			{"name", "EnablePitch"},
 			{"type", (int)Variant.Type.Bool}
@@ -112,7 +112,7 @@ public partial class Footsteps: Node3D
 
 		if(EnablePitch)
 		{
-			PropElement pPitchIndex = new PropElement
+			PropElement pPitchIndex = new()
 			{
 				{"name", "PitchIndex"},
 				{"type", (int)Variant.Type.Int}

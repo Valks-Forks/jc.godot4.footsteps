@@ -7,7 +7,7 @@ public partial class FPCamera: Node3D
 	public float MouseSensitive{ get; set; } = 0.005f;
 
 	[Export]
-	private Vector2 _XClamp = new Vector2(-65.0f, 80.0f);
+	private Vector2 _XClamp = new(-65.0f, 80.0f);
 	public Vector2 XClamp
 	{
 		get => _XClamp; 
@@ -21,8 +21,8 @@ public partial class FPCamera: Node3D
 	private Camera3D _Camera{get; set; } = null;
 	private FPCharacter _Player = null;
 
-	private Transform3D _PrevTr = new Transform3D();
-	private Transform3D _CurrentTr = new Transform3D();
+	private Transform3D _PrevTr = new();
+	private Transform3D _CurrentTr = new();
 	private bool _IsFixedUpdate = false;
 
 	public override void _Notification(long what)
