@@ -113,15 +113,10 @@ public partial class FPCharacter : CharacterBody3D
 		_InternalJumpForce = (JumpForce + Velocity.Length()) * 0.7f;
 	}
 
-	private void Jump()
-	{
-		_Velocity.y = _InternalJumpForce;
-	}
+	private void Jump() => _Velocity.y = _InternalJumpForce;
 
-	private void AddGravityForce(float force, float delta)
-	{
+	private void AddGravityForce(float force, float delta) => 
 		_Velocity.y -= force * delta;
-	}
 
 	private void Yaw(float delta)
 	{
@@ -137,8 +132,6 @@ public partial class FPCharacter : CharacterBody3D
 	}
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	static Vector3 Lerp(Vector3 from, Vector3 to, float t)
-	{
-		return (1.0f - t) * from + t * to;
-	}
+	static Vector3 Lerp(Vector3 from, Vector3 to, float t) => 
+		(1.0f - t) * from + t * to;
 }
