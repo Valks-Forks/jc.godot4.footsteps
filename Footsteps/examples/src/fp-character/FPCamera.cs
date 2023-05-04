@@ -36,7 +36,7 @@ public partial class FPCamera: Node3D
 	public override void _Ready()
 	{
 		TopLevel = true;
-		Target = Target;
+		Target = Target; // Did you mean to do this.Target = Target?
 
 		if(_Camera == null)
 		{
